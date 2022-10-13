@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1">
+        <title>weHelp-week1</title>
+        <style type="text/css">
+            body{margin: 0;padding: 0px;font-size: 20px;}
+            .box1{height: 30px;vertical-align:middle;margin-top: 10px;}
+            .box1RightText{
+                 float: right;
+            }
+            .box1RightPhoto{
+                height:0px;width: 0px;
+            }
+            .box2{padding: 0px;width:100%; height: 300px;background-color: rgb(176, 219, 236);margin-bottom: 20px; text-align: center; line-height: 300px;}
+            .box3{width: 1200px;font-size: 20px;display: flex;justify-content: center;align-items: center;
+                    display: flex;justify-content: center;flex-wrap: wrap;}
+            .box3cell{
+                width: 595px;height: 50px; background-color: rgb(176, 219, 236); flex: none;margin-right: 5px;margin-bottom:10px
+            }
+            .photoInBox3{
+                height:50px;width:80px
+            }
+            .box4{width: 1200px;font-size: 20px;display: flex;justify-content: center;align-items: center;
+                    display: flex;justify-content: center;flex-wrap: wrap;}
+            .box4cell{
+                width: 295px;margin-right: 5px;height: 280px;margin-bottom: 10px;background-color:rgb(176, 219, 236);flex: none;text-align: center;
+            }
+            .box4out{
+                display: flex;justify-content: center;align-items: center;
+            }
+            .photo{
+                width:295px;height:200px ;
+            }
+            .ooo11{display: inline-block;height: 50px;line-height: 35px;vertical-align: middle;font-size: 20px;font-style: normal;}
+
+            @media only screen and (max-width: 1220px) {
+                .box3{
+                    width: 90%;font-size: 20px;display: flex;justify-content: center;align-items: center;
+                    display: flex;justify-content: center;flex-wrap: wrap;
+                }
+                .box3cell{
+                    width: 48%;height: 50px; background-color: rgb(176, 219, 236); flex: none;margin-right: 10px;margin-bottom:10px
+                }
+
+
+                .box4{width: 90%;font-size: 20px;display: flex;justify-content: center;align-items: center;flex:none;
+                    display: flex;justify-content: center;flex-wrap: wrap}
+                .box4cell{width: 48%;margin-right: 10px;margin-bottom: 10px;background-color:rgb(176, 219, 236);flex: none;}
+                .photo{width: 100%;object-fit:cover;object-position: center center}
+            }
+
+
+            @media only screen and (max-width: 600px) {
+                .box1{height: 30px;vertical-align:middle}
+                .box1RightText{display: none;
+                }
+                .box1RightPhoto{
+                    float: right;
+                    height:30px;
+                    width: 30px;
+                    vertical-align:middle;
+                    margin-top: -3px;
+                }
+                
+
+                .box3{
+                    width: 90%;font-size: 20px;display: flex;justify-content: center;align-items: center;
+                    display: flex;justify-content: center;flex-wrap: wrap;
+                }
+                .box3cell{
+                    width: 100%;height: 50px; background-color: rgb(176, 219, 236); flex: none;margin-right: 10px;margin-bottom:10px
+                }
+                .box4{width: 90%;font-size: 20px;display: flex;justify-content: center;align-items: center;
+                    display: flex;justify-content: center}
+                .box4cell{width: 100%;margin-right: 10px;margin-bottom: 10px;background-color:rgb(176, 219, 236);flex: none;}
+                .photo{width: 100%;}
+            }
+
+        </style>
+        <script type="text/javascript">
+            var planObj
+            var count=0
+            // getJson()
+
+            console.log(planObj)
+            function getJson(){
+                planObj=getData()
+            }
+            function getData(){
+                var req=new XMLHttpRequest();
+                req.open("get","https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment.json");
+                req.onload=function(){
+                    //連線完成後，做連線後的處理
+                    planObj=JSON.parse(this.responseText)
+                    console.log(planObj)
+                    changeViewAndName(1,planObj)
+                    changeViewAndName(2,planObj)
+                    for(let j =3;j<11;j++){
+                        changeViewAndNameBig(j,planObj)
+                    }
+                    count=10
+                }
+                req.send();
+                console.log(count)
+            }
+            function changeViewAndName(i,planObj){
+                var viewNumber="Photo"+i
+                var nameNumber="Name"+i
+                // console.log(planObj.result.results[i-1])
+                allUrl=planObj.result.results[i-1].file
+                let urlArr = allUrl.split("https://")
+                url1="https://"+urlArr[1]
+                // console.log(url1)
+                var spanObjImg=window.document.getElementById(viewNumber)
+                var img= document.createElement("img")
+                img.src=url1
+                img.width="80"
+                img.height="50"
+                spanObjImg.appendChild(img)
+                var spanObjName=window.document.getElementById(nameNumber)
+                nameStr=planObj.result.results[i-1].stitle
+                var name = document.createElement("em")
+                name.textContent=nameStr
+                name.setAttribute("class","ooo11")
+                spanObjName.appendChild(name)
+            }
+            function changeViewAndNameBig(i,planObj){
+                var viewNumber="Photo"+i
+                var nameNumber="Name"+i
+                // console.log(planObj.result.results[i-1])
+                allUrl=planObj.result.results[i-1].file
+                let urlArr = allUrl.split("https://")
+                url1="https://"+urlArr[1]
+                // console.log(url1)
+                var spanObjImg=window.document.getElementById(viewNumber)
+                var img= document.createElement("img")
+                img.src=url1
+                img.setAttribute("class","photo")
+                spanObjImg.appendChild(img)
+                var spanObjName=window.document.getElementById(nameNumber)
+                nameStr=planObj.result.results[i-1].stitle
+                var name = document.createElement("em")
+                name.textContent=nameStr
+                name.setAttribute("class","ooo11")
+                spanObjName.appendChild(name)
+            }
+            console.log(planObj)
+            
+
+
+
+
+        </script>
+    </head>
+    <body  onload="getJson()">
+        <div class="box1">
+            <div style="display:inline-block">My Website</div>
+            <div class="box1RightText" >
+                <div style="display: inline-block;">Item 1</div>
+                <div style="display: inline-block;">Item 2</div>
+                <div style="display: inline-block;">Item 3</div>
+                <div style="display: inline-block;">Item 4</div>
+            </div>
+            <div class="box1RightPhoto" style="height: 30px;display: inline-block;">
+                <img  src="list.png" class="box1RightPhoto" width="30px" height="30px">
+            </div>
+            
+        </div>
+        <div class="box2" style="font-weight:bold">
+            Welcome to MyHome
+            
+        </div>
+        <div style="display: flex;justify-content: center;align-items: center;">
+            <div class="box3">
+
+                <div class="box3cell">
+                    <div id="Photo1" style="display:inline-block; vertical-align: middle;"></div>
+                    <div id="Name1" style="display:inline-block; vertical-align: middle;"></div>
+                </div>
+                <div class="box3cell">
+                    <div id="Photo2" style="display:inline-block; vertical-align: middle;"></div>
+                    <div id="Name2" style="display:inline-block; vertical-align: middle;"></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="box4out" >
+            <div class="box4">
+                <div class="box4cell"><div id="Photo3"></div><div id="Name3" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo4"></div><div id="Name4" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo5"></div><div id="Name5" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo6"></div><div id="Name6" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo7"></div><div id="Name7" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo8"></div><div id="Name8" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo9"></div><div id="Name9" style="flex:none ;"></div></div>
+                <div class="box4cell"><div id="Photo10"></div><div id="Name10" style="flex:none ;"></div></div>           
+            </div>
+        
+        </div>
+        
+
+    </body>
+</html>
